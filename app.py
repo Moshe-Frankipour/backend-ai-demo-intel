@@ -12,6 +12,7 @@ def home():
 
 @app.route("/api/random", methods=["GET"])
 def rand():
+    print("Generating random number")
     return str(random.randint(1, 100))
 
 
