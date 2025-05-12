@@ -48,7 +48,17 @@ def ask():
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    return "generate"
+    data = request.json
+    prompt = data.get("prompt")
+    if not prompt:
+        return jsonify({"error": "Missing prompt"}), 400
+
+    try:
+        response = client.chat.completions.create(model="gpt-4", messages=prompt)
+        content = response.choices[0].message.content
+        return make_response(jsonify({"reply": content}), 200)
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), 500)
 
 
 if __name__ == "__main__":
