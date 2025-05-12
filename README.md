@@ -65,7 +65,7 @@ backend-ai-demo-intel/
 
 ## Example API Usage
 
-Send a GET request to the `/start` endpoint.
+Send a GET request to the `/agent/start` endpoint.
 return session_id
 
 Send a POST request to the `/agent/ask` endpoint with the following JSON payload:
