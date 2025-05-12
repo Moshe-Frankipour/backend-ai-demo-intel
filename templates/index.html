@@ -3,20 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backend AI Demo</title>
+    <title>Chat with LLM Agent - Demo Intel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+
+        .user {
+            color: blue;
+        }
+
+        .assistant {
+            color: green;
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <h1>Welcome to the Backend AI Demo</h1>
-    </header>
-    <main>
-        <p>This is a demo application showcasing AI capabilities.</p>
-    </main>
-    <footer>
-        <p>&copy; 2025 Backend AI Demo</p>
-    </footer>
+    <h2>LLM Chat Agent</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="message" placeholder="Type your message..." size="50">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        let session_id = null;
+
+        // Start a new session on page load
+        window.onload = async () => {
+            const res = await fetch('/agent/start');
+            const data = await res.json();
+            session_id = data.session_id;
+        };
+
+        async function sendMessage() {
+            const input = document.getElementById("message");
+            const chatBox = document.getElementById("chat-box");
+            const userMessage = input.value;
+            if (!userMessage) return;
+
+            // Display user's message
+            chatBox.innerHTML += `<div class="user"><strong>You:</strong> ${userMessage}</div>`;
+
+            // Send message to backend
+            const res = await fetch('/agent/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session_id, message: userMessage })
+            });
+
+            const data = await res.json();
+            if (data.reply) {
+                chatBox.innerHTML += `<div class="assistant"><strong>Assistant:</strong> ${data.reply}</div>`;
+            } else {
+                chatBox.innerHTML += `<div class="assistant">Error: ${data.error}</div>`;
+            }
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
 </body>
 
 </html>
