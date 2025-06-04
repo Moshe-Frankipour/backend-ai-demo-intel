@@ -86,11 +86,6 @@ Send a POST request to the `/generate` endpoint with the following JSON payload:
 ## Sample Client
 ![image](https://github.com/user-attachments/assets/784a17f7-91a1-4c28-b5e5-3404d80959aa)
 
-## Video - Review
-https://github.com/user-attachments/assets/f24d535c-0254-4a1b-b34a-0cd5ca1582a1
-
-
-
 ## License
 
 This project is licensed under the MIT License.
